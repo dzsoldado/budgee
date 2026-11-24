@@ -1,11 +1,12 @@
+<p align="center"><img src="apps/web/public/favicon.svg" alt="Budgee logo" width="128" height="128"></p>
+
 # Budgee
 
 A personal budgee tracker: an offline-first PWA for expenses and income, synced end-to-end
 encrypted between your devices through a small server you own (Bun and SQLite), with daily
 encrypted backups to your Google Drive. The server only ever stores encrypted rows.
 
-- What it does and how: [`Budgee Tracker Technical Spec.md`](Budgee%20Tracker%20Technical%20Spec.md)
-- Deploying it: [`DEPLOY.md`](DEPLOY.md)
+Deploying it: [`DEPLOY.md`](DEPLOY.md)
 
 ## Run it with Docker
 
