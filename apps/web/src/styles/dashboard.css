@@ -1,0 +1,892 @@
+/* The Dashboard, with the exact values of Dashboard.dc.html (phones). From 1024px (no desktop
+   mockup) the header controls share a row, the KPI cards sit four across and the charts two
+   across, on the Foundations spacing (gutter 32, gaps 20). Logical properties and tokens only. */
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  line-height: normal;
+}
+
+/* ─── Header ──────────────────────────────────────────────────────────── */
+
+.dashboard-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-block: 16px 4px;
+  padding-inline: 16px;
+}
+
+.dashboard-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dashboard-layout-btn {
+  block-size: 40px;
+  padding-block: 0;
+  padding-inline: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font:
+    500 14px Inter,
+    sans-serif;
+}
+
+.dashboard-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-period-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.segmented-period {
+  flex-shrink: 0;
+  border-radius: 12px;
+}
+
+.segmented-period > label {
+  block-size: 36px;
+  padding-inline: 14px;
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+.period-nav {
+  display: flex;
+  flex: 1;
+  min-inline-size: 0;
+  align-items: center;
+  justify-content: space-between;
+  block-size: 42px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.period-step {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  inline-size: 40px;
+  block-size: 40px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.period-step:disabled {
+  color: var(--muted);
+}
+
+.period-title {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compare {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* The days compared, said in full (the select names the option only). */
+.compare-range {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.compare-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.compare-select {
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 44px;
+  padding-block: 0;
+  padding-inline: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font:
+    500 14px Inter,
+    sans-serif;
+}
+
+.exclusions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exclusions-label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Rows 44px apart when the chips wrap, so neighbours' 44px touch targets don't overlap. */
+.exclusions-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 6px;
+}
+
+.exclusion-chip,
+.exclusion-add {
+  position: relative;
+  display: flex;
+  align-items: center;
+  block-size: 34px;
+  padding-block: 0;
+  border-radius: 999px;
+  font:
+    500 13px Inter,
+    sans-serif;
+}
+
+.exclusion-chip {
+  gap: 6px;
+  padding-inline: 12px 8px;
+  border: 1px solid var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-ink);
+}
+
+.exclusion-chip-tag {
+  padding-inline-start: 10px;
+}
+
+.exclusion-add {
+  gap: 4px;
+  padding-inline: 12px;
+  border: 1px dashed var(--axis);
+  background: transparent;
+  color: var(--muted);
+}
+
+/* 44px touch targets for controls drawn smaller (see components.css). */
+.exclusion-chip::after,
+.exclusion-add::after,
+.period-step::after,
+.chart-edit::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block: min(0px, calc(50% - 22px));
+}
+
+/* ─── Body ────────────────────────────────────────────────────────────── */
+
+.dashboard-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-block: 12px 16px;
+  padding-inline: 16px;
+}
+
+.dashboard-loading {
+  padding-block: 24px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* The last view stays while a new period's entries load. */
+.dashboard-busy {
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dashboard-busy {
+    transition: opacity 0.15s;
+  }
+}
+
+.dashboard-empty,
+.dashboard-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.dashboard-empty {
+  align-items: center;
+  gap: 8px;
+  padding-block: 32px;
+  text-align: center;
+}
+
+.dashboard-empty .btn {
+  margin-block-start: 8px;
+}
+
+.dashboard-empty-title,
+.dashboard-notice-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-inline-size: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.kpi-label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.kpi-value {
+  overflow: hidden;
+  font:
+    600 24px "Space Grotesk",
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kpi-compare {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-delta {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.charts {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ─── Chart cards (ChartView) ─────────────────────────────────────────── */
+
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-inline-size: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.chart-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.chart-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-inline-size: 0;
+}
+
+.chart-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.chart-subtitle {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.chart-edit {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  inline-size: 40px;
+  block-size: 40px;
+  margin-block: -8px 0;
+  margin-inline: 0 -8px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+}
+
+/* Drawn 40×40 as in the mockup; the hit layer makes it 44×44 (its negative margins absorb it). */
+.chart-edit::after {
+  inset-inline: -2px;
+}
+
+.chart-edit[aria-expanded="true"] {
+  background: var(--sunken);
+  color: var(--ink);
+}
+
+/* The chart menu: Edit, Move up, Move down, Remove. */
+.chart-menu {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.chart-menu-list {
+  position: absolute;
+  inset-block-start: 36px;
+  inset-inline-end: -8px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 180px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.chart-menu-item {
+  display: flex;
+  align-items: center;
+  min-block-size: 44px;
+  padding-block: 0;
+  padding-inline: 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font:
+    400 15px Inter,
+    sans-serif;
+  text-align: start;
+  text-decoration: none;
+}
+
+.chart-menu-item:hover,
+.chart-menu-item:focus-visible {
+  background: var(--sunken);
+  color: var(--ink);
+}
+
+.chart-menu-item:focus-visible {
+  outline-offset: -2px;
+}
+
+.chart-menu-item.chart-menu-danger {
+  color: var(--expense-ink);
+}
+
+.dashboard-error {
+  color: var(--expense-ink);
+  font-size: 13px;
+}
+
+.chart-empty {
+  padding-block: 24px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-swatch {
+  flex-shrink: 0;
+  inline-size: 14px;
+  block-size: 2px;
+}
+
+.chart-swatch-box {
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: 3px;
+}
+
+.chart-swatch-compare {
+  background: var(--compare);
+}
+
+/* Chart.js sizes the canvas to this box. */
+.chart-canvas {
+  position: relative;
+  block-size: 184px;
+  min-inline-size: 0;
+}
+
+/* Horizontal bars: labels and values in HTML, one 40px row per group, bars in between. */
+.chart-rows {
+  --row: 40px;
+
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) minmax(92px, max-content);
+  gap: 8px;
+  align-items: start;
+}
+
+.chart-row-labels,
+.chart-row-values {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chart-row-labels > li,
+.chart-row-values > li {
+  display: flex;
+  block-size: var(--row);
+  justify-content: center;
+}
+
+.chart-row-labels > li {
+  display: block;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: var(--row);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chart-row-values > li {
+  flex-direction: column;
+  align-items: flex-end;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-row-value {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.chart-row-delta {
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.chart-canvas-rows {
+  block-size: calc(var(--row) * var(--rows));
+}
+
+/* Phones: the ring above its legend; wide screens: side by side. */
+.chart-doughnut {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.chart-canvas-doughnut {
+  block-size: 160px;
+}
+
+.chart-doughnut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  list-style: none;
+}
+
+.chart-doughnut-legend > li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-doughnut-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chart-doughnut-value {
+  font-weight: 600;
+}
+
+.chart-doughnut-share {
+  min-inline-size: 36px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: end;
+}
+
+/* A table config (Year by year), as drawn. */
+.chart-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-table thead tr {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.chart-table thead th {
+  padding-block: 6px;
+  padding-inline: 0;
+  border-block-end: 1px solid var(--line);
+  font-weight: 500;
+  text-align: end;
+}
+
+.chart-table thead th:first-child,
+.chart-table tbody th {
+  text-align: start;
+}
+
+.chart-table tbody th {
+  padding-block: 9px;
+  padding-inline: 0;
+  font-weight: 500;
+}
+
+.chart-table tbody td {
+  text-align: end;
+}
+
+.chart-table tbody tr > * {
+  border-block-end: 1px solid var(--line-soft);
+}
+
+.chart-table tbody tr:last-child > * {
+  border-block-end: 0;
+}
+
+.chart-table .chart-table-current,
+.chart-table .chart-table-current th {
+  font-weight: 600;
+}
+
+/* ─── Add chart ───────────────────────────────────────────────────────── */
+
+.add-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.add-chart-btn {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  block-size: 52px;
+  border: 1.5px dashed var(--axis);
+  border-radius: 16px;
+  background: transparent;
+  color: var(--ink);
+  font:
+    500 15px Inter,
+    sans-serif;
+}
+
+.add-chart-btn:hover {
+  color: var(--ink);
+  background: var(--surface);
+}
+
+a.add-chart-btn {
+  text-decoration: none;
+}
+
+.add-chart-note {
+  text-align: center;
+}
+
+/* ─── Edit layout: the charts as a list to reorder ────────────────────── */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.layout-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.layout-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-block-size: 56px;
+  padding-block: 6px;
+  padding-inline: 16px 6px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+/* Long names wrap rather than being cut. */
+.layout-name {
+  flex: 1;
+  min-inline-size: 0;
+  font-size: 15px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.layout-move {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  inline-size: 44px;
+  block-size: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.layout-move:not([aria-disabled="true"]):hover {
+  background: var(--sunken);
+}
+
+/* Stays focusable at the ends, so focus isn't lost when a chart reaches the top or bottom. */
+.layout-move[aria-disabled="true"] {
+  color: var(--muted);
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* ─── Exclusions sheet ────────────────────────────────────────────────── */
+
+.sheet {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  max-block-size: 80dvh;
+  margin-block: auto 0;
+  margin-inline: 0;
+  padding: 0;
+  padding-block-end: env(safe-area-inset-bottom);
+  border: 1px solid var(--line);
+  border-block-end: 0;
+  border-start-start-radius: 16px;
+  border-start-end-radius: 16px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  line-height: normal;
+}
+
+.sheet[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet::backdrop {
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-block: 6px 2px;
+  padding-inline: 16px 6px;
+}
+
+.sheet-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding-block: 4px 20px;
+  padding-inline: 16px;
+}
+
+.sheet-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.sheet-group-title {
+  margin-block-end: 8px;
+  padding: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sheet-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sheet-error {
+  color: var(--expense-ink);
+  font-size: 13px;
+}
+
+/* ─── Wide screens ────────────────────────────────────────────────────── */
+
+@media (min-width: 1024px) {
+  .dashboard {
+    gap: 20px;
+    max-inline-size: 1120px;
+    padding-block: 28px 40px;
+    padding-inline: 32px;
+  }
+
+  .dashboard-header,
+  .dashboard-body {
+    padding: 0;
+  }
+
+  .dashboard-header {
+    gap: 16px;
+  }
+
+  .dashboard-body {
+    gap: 20px;
+  }
+
+  .dashboard-controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 24px;
+  }
+
+  .dashboard-period-row {
+    flex: 0 1 420px;
+  }
+
+  .compare {
+    flex: 1 1 360px;
+    max-inline-size: 520px;
+  }
+
+  .kpis {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .kpi {
+    padding-block: 16px;
+    padding-inline: 18px;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 20px;
+  }
+
+  .chart-canvas {
+    block-size: 220px;
+  }
+
+  .chart-canvas-rows {
+    block-size: calc(var(--row) * var(--rows));
+  }
+
+  .chart-doughnut {
+    grid-template-columns: 160px minmax(0, 1fr);
+  }
+
+  .chart-canvas-doughnut {
+    block-size: 160px;
+  }
+
+  .add-chart {
+    grid-column: 1 / -1;
+  }
+
+  .layout {
+    max-inline-size: 640px;
+  }
+
+  .sheet {
+    inline-size: min(520px, calc(100% - 64px));
+    margin: auto;
+    border-block-end: 1px solid var(--line);
+    border-radius: 16px;
+  }
+}

@@ -1,0 +1,486 @@
+/* The app frame: bottom tab bar on phones (Main.dc.html), sidebar from 1024px
+   (Desktop.dc.html). */
+
+.app {
+  min-block-size: 100dvh;
+}
+
+.app-main {
+  padding-block-end: calc(72px + env(safe-area-inset-bottom));
+}
+
+/* ─── Tab bar ─────────────────────────────────────────────────────────── */
+
+.tab-bar {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  block-size: calc(72px + env(safe-area-inset-bottom));
+  padding-block: 6px calc(10px + env(safe-area-inset-bottom));
+  padding-inline: 8px;
+  border-block-start: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.tab[aria-current="page"] {
+  color: var(--primary-ink);
+  font-weight: 600;
+}
+
+.tab-add-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 40px;
+  block-size: 28px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+/* Add / edit, Add chart and the chart editor bring their own Close and Save; no tab bar there. */
+.app-form .app-main {
+  padding-block-end: 0;
+}
+
+.app-form .tab-bar {
+  display: none;
+}
+
+/* ─── Sidebar ─────────────────────────────────────────────────────────── */
+
+.sidebar {
+  display: none;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-inline: 8px;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: 9px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font:
+    700 16px "Space Grotesk",
+    sans-serif;
+}
+
+.sidebar-name {
+  font:
+    600 17px "Space Grotesk",
+    sans-serif;
+}
+
+.sidebar-new {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  block-size: 44px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  block-size: 40px;
+  padding-inline: 10px;
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.sidebar-link[aria-current="page"] {
+  background: var(--primary-soft);
+  color: var(--primary-ink);
+  font-weight: 600;
+}
+
+.sidebar-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-block-start: auto;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.sidebar-status-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.sidebar-status-note {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Sync now (Desktop.dc.html): drawn 34px tall, with a 44px hit area. */
+.sidebar-sync {
+  position: relative;
+  block-size: 34px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--ink);
+  font:
+    500 13px Inter,
+    sans-serif;
+  cursor: pointer;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block: -5px;
+  }
+
+  &:hover:not([aria-disabled="true"]) {
+    background: var(--sunken);
+  }
+
+  /* A run in progress: still focusable, visibly busy. */
+  &[aria-disabled="true"] {
+    color: var(--muted);
+    cursor: progress;
+  }
+}
+
+/* "Open Settings" while not paired or removed: the Sync now button's drawing, as a link. */
+.sidebar-open-settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--ink);
+  }
+}
+
+.status-dot {
+  flex-shrink: 0;
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+/* Not paired or offline: an unfilled dot. */
+.status-dot-off {
+  border: 1.5px solid var(--muted);
+  background: transparent;
+}
+
+/* Sync failed or device removed. */
+.status-dot-error {
+  background: var(--expense);
+}
+
+/* The Settings item's dot while the live CSV file needs the user: by the icon on the tab bar,
+   at the end of the sidebar link. */
+.tab {
+  position: relative;
+}
+
+.tab .nav-attention {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-start: calc(50% + 8px);
+}
+
+.sidebar-link .nav-attention {
+  margin-inline-start: auto;
+}
+
+/* ─── Screens ─────────────────────────────────────────────────────────── */
+
+.screen-header {
+  padding-block: 16px 4px;
+  padding-inline: 16px;
+}
+
+.screen-title {
+  font:
+    600 22px / 1.25 "Space Grotesk",
+    sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.screen-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-block: 12px 16px;
+  padding-inline: 16px;
+}
+
+/* ─── Wide screens ────────────────────────────────────────────────────── */
+
+@media (min-width: 1024px) {
+  .app {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .tab-bar {
+    display: none;
+  }
+
+  .sidebar {
+    position: sticky;
+    inset-block-start: 0;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 232px;
+    gap: 20px;
+    block-size: 100dvh;
+    padding-block: 20px;
+    padding-inline: 14px;
+    overflow-y: auto;
+    border-inline-end: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .app-main {
+    flex: 1;
+    min-inline-size: 0;
+    padding-block-end: 0;
+  }
+
+  .screen {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-inline-size: 1120px;
+    padding-block: 28px 40px;
+    padding-inline: 32px;
+  }
+
+  .screen-header,
+  .screen-body {
+    padding: 0;
+  }
+
+  .screen-body {
+    gap: 20px;
+  }
+
+  .screen-title {
+    font-size: 28px;
+  }
+}
+
+/* ─── Dev gallery ─────────────────────────────────────────────────────── */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.gallery-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.gallery-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.gallery-money {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-block: 10px;
+  padding-inline: 12px;
+  border-radius: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.gallery-money-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.gallery-money-value {
+  font-weight: 600;
+}
+
+.gallery-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  block-size: 28px;
+}
+
+.gallery-bars > span {
+  inline-size: 10px;
+  border-start-start-radius: 3px;
+  border-start-end-radius: 3px;
+}
+
+.gallery-bars > .gallery-bars-gap {
+  inline-size: 6px;
+}
+
+/* ─── Skip link and boot error ────────────────────────────────────────── */
+
+.skip-link {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-start: 8px;
+  z-index: 20;
+  padding-block: 10px;
+  padding-inline: 14px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* Focused only by the skip link; the screen itself needs no ring. */
+.app-main:focus {
+  outline: none;
+}
+
+.boot-error {
+  max-inline-size: 480px;
+  padding-block: 24px;
+  padding-inline: 16px;
+}
+
+/* ─── Update available (shell/UpdatePrompt.tsx) ──────────────────────── */
+
+/* Above the tab bar on phones, above the Save footer on form screens, bottom right from 1024px. */
+.update-prompt {
+  position: fixed;
+  inset-inline: 16px;
+  inset-block-end: calc(84px + env(safe-area-inset-bottom));
+  z-index: 15;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.app-form .update-prompt {
+  inset-block-end: calc(96px + env(safe-area-inset-bottom));
+}
+
+.update-prompt-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  inline-size: 100%;
+  max-inline-size: 440px;
+  padding-block: 12px;
+  padding-inline: 16px 12px;
+  box-shadow: var(--shadow);
+  pointer-events: auto;
+}
+
+.update-prompt-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* At the end of the line, or of its own line when the text needs the width. */
+.update-prompt-card > .row {
+  margin-inline-start: auto;
+}
+
+/* While it shows, the end of the content can scroll clear of it (12px below it, the card's
+   height in --update-prompt-space). Add / edit grows its sticky Save footer instead, so the
+   card sits over the footer's top rather than over the last fields. */
+.app:has(.update-prompt-card) .app-main {
+  padding-block-end: calc(96px + env(safe-area-inset-bottom) + var(--update-prompt-space, 0px));
+}
+
+.app-form:has(.update-prompt-card) .app-main {
+  padding-block-end: calc(108px + env(safe-area-inset-bottom) + var(--update-prompt-space, 0px));
+}
+
+.app-form:has(.update-prompt-card) .app-main:has(.editor-footer) {
+  padding-block-end: 0;
+}
+
+.app-form:has(.update-prompt-card) .editor-footer {
+  padding-block-start: calc(36px + var(--update-prompt-space, 0px));
+}
+
+@media (min-width: 1024px) {
+  .update-prompt,
+  .app-form .update-prompt {
+    inset-inline: auto 32px;
+    inset-block-end: 24px;
+  }
+
+  .app:has(.update-prompt-card) .app-main,
+  .app-form:has(.update-prompt-card) .app-main {
+    padding-block-end: calc(36px + var(--update-prompt-space, 0px));
+  }
+
+  /* Save rises above the card, which can reach under the form's column on narrower windows. */
+  .app-form:has(.update-prompt-card) .editor-footer {
+    padding-block: 16px calc(36px + var(--update-prompt-space, 0px));
+  }
+}

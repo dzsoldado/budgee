@@ -1,0 +1,534 @@
+/* Add chart and Edit chart, with the exact values of AddChart.dc.html and ChartEdit.dc.html
+   (phones). From 1024px (no desktop mockup) the gallery runs several cards across and the
+   editor keeps its preview in view beside the fields, on the Foundations spacing (gutter 32).
+   Logical properties and tokens only. */
+
+.chart-form-screen {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvh;
+  line-height: normal;
+}
+
+/* ─── Top bar: Close or Cancel, title, Save ───────────────────────────── */
+
+.form-bar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-block: 8px;
+  padding-inline: 4px 8px;
+  border-block-end: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.form-bar-close {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  inline-size: 44px;
+  block-size: 44px;
+  border-radius: 12px;
+  color: var(--ink);
+}
+
+.form-bar-close:hover {
+  background: var(--sunken);
+}
+
+/* Focused on arrival (tabindex -1) for screen readers; not a control, so no ring. */
+.form-bar-title:focus {
+  outline: none;
+}
+
+.form-bar-title {
+  overflow: hidden;
+  font:
+    600 17px "Space Grotesk",
+    sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.form-bar-spacer {
+  flex-shrink: 0;
+  inline-size: 44px;
+}
+
+.form-bar-cancel {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  block-size: 44px;
+  padding-block: 0;
+  padding-inline: 12px;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.form-bar-save {
+  flex-shrink: 0;
+  block-size: 40px;
+  padding-inline: 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* ─── Add chart ───────────────────────────────────────────────────────── */
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+}
+
+.gallery-intro {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gallery-grid > li {
+  display: flex;
+  min-inline-size: 0;
+}
+
+.gallery-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  min-inline-size: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.gallery-card:hover {
+  border-color: var(--axis);
+  color: var(--ink);
+}
+
+.gallery-preview {
+  display: block;
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.gallery-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.gallery-hint {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.gallery-blank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  block-size: 52px;
+  border: 1.5px dashed var(--axis);
+  border-radius: 14px;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.gallery-blank:hover {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+/* ─── Edit chart ──────────────────────────────────────────────────────── */
+
+.ce-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 16px;
+}
+
+.ce-preview,
+.ce-fields {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.ce-preview {
+  gap: 6px;
+}
+
+.ce-fields {
+  gap: 18px;
+}
+
+.ce-alerts:empty {
+  display: none;
+}
+
+.ce-alert {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding-block: 12px;
+  padding-inline: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.ce-fields .input[aria-invalid="true"] {
+  border-color: var(--expense-ink);
+}
+
+.ce-label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ce-group {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ce-legend {
+  margin-block-end: 8px;
+  padding: 0;
+}
+
+.ce-kinds {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ce-kind {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-inline-size: 0;
+  block-size: 64px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font:
+    500 12px Inter,
+    sans-serif;
+}
+
+.ce-kind[aria-pressed="true"] {
+  border: 2px solid var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-ink);
+  font-weight: 600;
+}
+
+.ce-selects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ce-select {
+  inline-size: 100%;
+  min-inline-size: 0;
+  block-size: 44px;
+  padding-block: 0;
+  padding-inline: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font:
+    500 15px Inter,
+    sans-serif;
+}
+
+.ce-select:disabled {
+  opacity: 0.6;
+}
+
+/* The top-N choice at the end of its row. */
+.ce-select-small {
+  flex-shrink: 0;
+  inline-size: auto;
+  border-radius: 10px;
+  background: var(--bg);
+  font-size: 14px;
+}
+
+/* Says why Show or Compare with is fixed, right under the selects. */
+.ce-note {
+  margin-block-start: -10px;
+}
+
+/* A card with a title, a hint and a control (Use dashboard exclusions, Running total). */
+.ce-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-block-size: 60px;
+  padding-block: 4px;
+  padding-inline: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.ce-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-inline-size: 0;
+}
+
+.ce-row-title {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.ce-row-hint {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.ce-counts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ce-counts-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ce-counts-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.ce-counts-hint {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Categories and tags: a card of rows to tick (counted) or untick. */
+.ce-list {
+  position: relative;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.ce-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-block: 10px 6px;
+  padding-inline: 14px;
+}
+
+.ce-list-title {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ce-list-count {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.ce-list-empty {
+  padding-block: 10px;
+  padding-inline: 14px;
+  border-block-start: 1px solid var(--line-soft);
+}
+
+.ce-check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-block-size: 48px;
+  padding-block: 0;
+  padding-inline: 14px;
+  border-block-start: 1px solid var(--line-soft);
+  cursor: pointer;
+}
+
+.ce-check input {
+  flex-shrink: 0;
+  inline-size: 20px;
+  block-size: 20px;
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+.ce-check:has(input:disabled) {
+  cursor: default;
+}
+
+.ce-check-name {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 6px;
+  min-inline-size: 0;
+  color: var(--ink);
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.ce-check-off {
+  color: var(--muted);
+}
+
+.ce-check-note {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Only entries tagged: tag chips with autocomplete, inside the Tags card. */
+.ce-only {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-block: 6px;
+  padding-inline: 14px;
+  border-block-start: 1px solid var(--line-soft);
+}
+
+.ce-only-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  min-block-size: 40px;
+}
+
+.ce-only-label {
+  font-size: 15px;
+}
+
+.ce-only-box {
+  flex: 1 1 170px;
+  min-block-size: 44px;
+  padding-block: 5px;
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+.ce-only-hint {
+  padding-block-end: 4px;
+}
+
+.ce-remove {
+  block-size: 48px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--expense-ink);
+  font:
+    600 15px Inter,
+    sans-serif;
+}
+
+.ce-remove:hover {
+  background: var(--expense-soft);
+}
+
+/* ─── Wide screens ────────────────────────────────────────────────────── */
+
+@media (min-width: 1024px) {
+  .chart-form-screen {
+    min-block-size: auto;
+  }
+
+  .gallery {
+    gap: 20px;
+    max-inline-size: 1120px;
+    padding-block: 24px 40px;
+    padding-inline: 32px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .gallery-blank {
+    max-inline-size: 360px;
+  }
+
+  /* Fields on the start side, the preview beside them, kept in view while scrolling. */
+  .ce-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 32px;
+    max-inline-size: 1120px;
+    padding-block: 24px 40px;
+    padding-inline: 32px;
+  }
+
+  .ce-fields {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .ce-preview {
+    position: sticky;
+    inset-block-start: 85px;
+    grid-row: 1;
+    grid-column: 2;
+  }
+}

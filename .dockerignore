@@ -1,0 +1,15 @@
+.env*
+!.env.example
+node_modules
+**/node_modules
+.data
+.superpowers
+.git
+dist
+**/dist
+.playwright-mcp
+.mcp.json
+.claude
+.wrangler
+docs
+pm

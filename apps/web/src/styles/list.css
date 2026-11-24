@@ -1,0 +1,731 @@
+/* The List screen, with the exact values of Main.dc.html (phones) and Desktop.dc.html (from
+   1024px). The mockups set no line height, so the List uses the font's own. */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  line-height: normal;
+}
+
+/* Phones: the header stays pinned while the day groups scroll under it (as the Main.dc.html
+   frame shows). Rows scrolled into view by focus stop below it (--list-header-size is set by
+   ListScreen). */
+.list-header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-block: 16px 8px;
+  padding-inline: 16px;
+  background: var(--bg);
+}
+
+.list-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.month-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 44px;
+  block-size: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.month-title {
+  font:
+    600 22px "Space Grotesk",
+    sans-serif;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+/* ─── Sync pill ───────────────────────────────────────────────────────── */
+
+.sync-pill {
+  position: relative;
+  display: flex;
+  flex-shrink: 1;
+  min-inline-size: 0;
+  align-items: center;
+  gap: 6px;
+  block-size: 36px;
+  padding-block: 0;
+  padding-inline: 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font:
+    500 12px Inter,
+    sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.sync-pill:hover {
+  color: var(--ink);
+}
+
+.sync-pill:is(button) {
+  cursor: pointer;
+}
+
+.sync-pill-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sync-icon {
+  display: flex;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sync-icon-spinning {
+    animation: sync-spin 1s linear infinite;
+  }
+}
+
+@keyframes sync-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Below 375px the refresh icon goes and the pill tightens, so every state's text fits. */
+@media (max-width: 374.98px) {
+  .sync-pill {
+    gap: 5px;
+    padding-inline: 9px;
+  }
+
+  .sync-icon {
+    display: none;
+  }
+}
+
+/* 44px touch targets for controls drawn smaller (as in components.css). */
+.sync-pill::after,
+.filter-chip::after,
+.filter-button::after,
+.list-action::after,
+.month-step::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block: min(0px, calc(50% - 22px));
+}
+
+/* Narrow phones: the month steps are drawn 32px wide (their 44px targets overlap the title),
+   which keeps "November 2026" on one line beside the longer sync states, so the header never
+   changes height as the status changes. From 421px the mockup's 44px fit. */
+@media (max-width: 420px) {
+  .month-step {
+    inline-size: 32px;
+  }
+
+  .month-step::after {
+    inset-inline: -6px;
+  }
+}
+
+/* ─── Month totals ────────────────────────────────────────────────────── */
+
+.totals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.total {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-inline-size: 0;
+}
+
+.total-label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.total-value {
+  font:
+    600 18px "Space Grotesk",
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.total-expense {
+  color: var(--expense-ink);
+}
+
+/* ─── Search and filters ──────────────────────────────────────────────── */
+
+.list-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  block-size: 44px;
+  padding-block: 0;
+  padding-inline: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.search:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* The label fills the box, so a click anywhere in it reaches the input. */
+.search-field {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  min-inline-size: 0;
+  cursor: text;
+}
+
+/* The native clear button can't take the tokens; .search-clear replaces it. */
+.search input::-webkit-search-cancel-button {
+  display: none;
+  appearance: none;
+}
+
+.search-clear {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  inline-size: 28px;
+  block-size: 28px;
+  margin-inline-end: -6px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.search-clear:hover {
+  background: var(--sunken);
+  color: var(--ink);
+}
+
+.search-clear::after {
+  content: "";
+  position: absolute;
+  inset: min(0px, calc(50% - 22px));
+}
+
+.search input {
+  flex: 1;
+  min-inline-size: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font:
+    400 15px Inter,
+    sans-serif;
+}
+
+.search input::placeholder {
+  color: var(--muted);
+}
+
+/* Scrolls sideways; the padding keeps hit areas and focus rings inside the scroll box. */
+.chip-row {
+  display: flex;
+  gap: 8px;
+  margin: -4px;
+  padding: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filter-chip {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  block-size: 36px;
+  padding-block: 0;
+  padding-inline: 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font:
+    500 13px Inter,
+    sans-serif;
+  white-space: nowrap;
+}
+
+.filter-chip[aria-pressed="true"] {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 600;
+}
+
+.filter-chip-menu {
+  gap: 4px;
+  padding-inline: 12px;
+}
+
+/* A picker with a choice: the active filter fill. */
+.filter-chip.filter-active,
+.filter-button.filter-active {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-ink);
+}
+
+/* ─── Day groups (phones) ─────────────────────────────────────────────── */
+
+.days {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-block: 4px 16px;
+  padding-inline: 16px;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.day-head {
+  scroll-margin-block-start: calc(var(--list-header-size, 0px) + 8px);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-inline: 4px;
+}
+
+.day-label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.day-net {
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.day-entries {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  list-style: none;
+}
+
+.day-entries > li + li {
+  border-block-start: 1px solid var(--line-soft);
+}
+
+.entry {
+  scroll-margin-block-start: calc(var(--list-header-size, 0px) + 8px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-block-size: 44px;
+  padding-block: 12px;
+  padding-inline: 14px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.entry:hover {
+  color: var(--ink);
+  background: var(--bg);
+}
+
+/* Inside the card's rounded clip. */
+.entry:focus-visible {
+  outline-offset: -2px;
+}
+
+.entry-avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  inline-size: 36px;
+  block-size: 36px;
+  border-radius: 50%;
+  background: var(--expense-soft);
+  color: var(--expense-ink);
+  font:
+    600 14px "Space Grotesk",
+    sans-serif;
+}
+
+.entry-avatar-income {
+  background: var(--income-soft);
+  color: var(--income-ink);
+}
+
+.entry-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-inline-size: 0;
+}
+
+.entry-title {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.entry-detail {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.entry-amounts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.entry-amount {
+  font:
+    600 16px "Space Grotesk",
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.entry-original {
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ─── Empty states ────────────────────────────────────────────────────── */
+
+.list-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-block: 4px 16px;
+  margin-inline: 16px;
+  padding-block: 32px;
+  padding-inline: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.list-empty-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.list-empty .btn {
+  margin-block-start: 8px;
+}
+
+/* ─── Wide screens: Desktop.dc.html ───────────────────────────────────── */
+
+.list-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.list-action {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  block-size: 40px;
+  padding-block: 0;
+  padding-inline: 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font:
+    500 14px Inter,
+    sans-serif;
+}
+
+a.list-action {
+  text-decoration: none;
+}
+
+.filter-button {
+  position: relative;
+  block-size: 40px;
+  padding-block: 0;
+  padding-inline: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font:
+    500 13px Inter,
+    sans-serif;
+  white-space: nowrap;
+}
+
+.entry-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.entry-table {
+  inline-size: 100%;
+  min-inline-size: 760px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.entry-table th {
+  padding-block: 12px;
+  padding-inline: 16px;
+  border-block-end: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: start;
+}
+
+.entry-table td {
+  padding-block: 12px;
+  padding-inline: 16px;
+  border-block-end: 1px solid var(--line-soft);
+}
+
+.entry-table .col-end {
+  text-align: end;
+}
+
+.entry-table tbody tr {
+  position: relative;
+  background: var(--surface);
+}
+
+.entry-table tbody tr:hover {
+  background: var(--bg);
+}
+
+.entry-table tbody tr:has(.row-link:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.cell-date {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cell-category {
+  font-weight: 500;
+}
+
+/* The whole row opens the entry; the ring is drawn on the row. */
+.row-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.row-link:hover {
+  color: inherit;
+}
+
+.row-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.row-link:focus-visible {
+  outline: none;
+}
+
+.cell-muted {
+  color: var(--muted);
+}
+
+.cell-original {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+.cell-amount {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .list {
+    gap: 20px;
+    max-inline-size: calc(1120px + 64px);
+    padding-block: 28px 40px;
+    padding-inline: 32px;
+  }
+
+  .list-header {
+    position: static;
+    gap: 20px;
+    padding: 0;
+    background: none;
+  }
+
+  .list-top {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .month-nav {
+    gap: 4px;
+  }
+
+  .month-step {
+    inline-size: 40px;
+    block-size: 40px;
+    border-radius: 10px;
+  }
+
+  .month-title {
+    font-size: 28px;
+  }
+
+  .totals {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+
+  .total {
+    gap: 6px;
+    padding-block: 16px;
+    padding-inline: 18px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surface);
+  }
+
+  .total-label {
+    font-size: 13px;
+  }
+
+  .total-value {
+    font-size: 26px;
+  }
+
+  .list-filters {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .search {
+    flex: 1 1 260px;
+    block-size: 40px;
+    padding-inline: 12px;
+    border-radius: 10px;
+  }
+
+  .search input {
+    font-size: 14px;
+  }
+
+  .list-filters .segmented > label {
+    padding-inline: 12px;
+  }
+
+  .list-empty {
+    margin: 0;
+  }
+}
+
+/* Narrower desktops (content under ~900px): tighter cells and wrapping text columns, so every
+   column, Amount included, fits without scrolling sideways. */
+@media (min-width: 1024px) and (max-width: 1199.98px) {
+  .entry-table {
+    min-inline-size: 0;
+  }
+
+  .entry-table th,
+  .entry-table td {
+    padding-inline: 10px;
+  }
+
+  .entry-table th:first-child,
+  .entry-table td:first-child {
+    padding-inline-start: 16px;
+  }
+
+  .entry-table th:last-child,
+  .entry-table td:last-child {
+    padding-inline-end: 16px;
+  }
+
+  .entry-table .cell-wrap {
+    overflow-wrap: anywhere;
+  }
+}

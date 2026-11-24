@@ -1,0 +1,89 @@
+/*
+ * Plain Ledger tokens, copied from docs/mockups/project/theme.css. Light and dark are separate,
+ * hand-picked sets. `data-theme` on <html> picks one (the app sets it from Settings → Appearance,
+ * following the system for "system"); before that, the system preference decides. Any element
+ * with `data-theme` re-scopes the tokens beneath it.
+ */
+:root,
+[data-theme="light"] {
+  --bg: #f5f5fa;
+  --surface: #ffffff;
+  --sunken: #eaeaf2;
+  --line: #dfdfea;
+  --line-soft: #eeeef4;
+  --ink: #16151f;
+  --muted: #595c70;
+  --primary: #5b2bb8;
+  --on-primary: #ffffff;
+  --primary-soft: #eee8f9;
+  --primary-ink: #46208f;
+  --income: #008a78;
+  --income-ink: #007a6a;
+  --income-soft: #dff3ef;
+  --expense: #c2550f;
+  --expense-ink: #a0440a;
+  --expense-soft: #fbeadf;
+  --compare: #a6a8b8;
+  --grid: #eeeef4;
+  --axis: #c8c9d6;
+  --tip-bg: #16151f;
+  --tip-ink: #ffffff;
+  --shadow: 0 8px 24px rgba(22, 21, 31, 0.1);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #100f17;
+  --surface: #1a1924;
+  --sunken: #25242f;
+  --line: #2f2e3c;
+  --line-soft: #23222e;
+  --ink: #ecebf4;
+  --muted: #a09fb4;
+  --primary: #7a4fe0;
+  --on-primary: #ffffff;
+  --primary-soft: #2e1f57;
+  --primary-ink: #c5b0f5;
+  --income: #119c8b;
+  --income-ink: #3cc4b4;
+  --income-soft: #12302d;
+  --expense: #d06d2e;
+  --expense-ink: #f5a274;
+  --expense-soft: #3a2416;
+  --compare: #5f5e72;
+  --grid: #23222e;
+  --axis: #3c3b4c;
+  --tip-bg: #ecebf4;
+  --tip-ink: #16151f;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #100f17;
+    --surface: #1a1924;
+    --sunken: #25242f;
+    --line: #2f2e3c;
+    --line-soft: #23222e;
+    --ink: #ecebf4;
+    --muted: #a09fb4;
+    --primary: #7a4fe0;
+    --on-primary: #ffffff;
+    --primary-soft: #2e1f57;
+    --primary-ink: #c5b0f5;
+    --income: #119c8b;
+    --income-ink: #3cc4b4;
+    --income-soft: #12302d;
+    --expense: #d06d2e;
+    --expense-ink: #f5a274;
+    --expense-soft: #3a2416;
+    --compare: #5f5e72;
+    --grid: #23222e;
+    --axis: #3c3b4c;
+    --tip-bg: #ecebf4;
+    --tip-ink: #16151f;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}

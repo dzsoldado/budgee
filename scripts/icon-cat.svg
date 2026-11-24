@@ -1,0 +1,100 @@
+<!-- The app icon's drawing: a cat in round glasses doing the books, sitting on its hind feet,
+     peering down at the invoices in one paw while the other counts a stack of coins, on a
+     transparent 512 square. gen-icons.ts puts it on the primary-color background at each icon's
+     size. Its ink bounds, outlines included, are x 26–480, y 38–491 (center 253.5, 265): update ART_CENTER
+     and ART_FEET in gen-icons.ts after moving it. The silhouette shapes are listed twice, fat in
+     ink and then filled, so tail, feet, body, ears, cheek tufts and head merge into one outlined
+     body. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<title>Budgee app icon drawing</title>
+<defs>
+  <clipPath id="cat-body"><ellipse cx="256" cy="372" rx="146" ry="94"/></clipPath>
+  <clipPath id="cat-eye-l"><ellipse cx="208" cy="208" rx="22" ry="24"/></clipPath>
+  <clipPath id="cat-eye-r"><ellipse cx="304" cy="208" rx="22" ry="24"/></clipPath>
+  <g id="cat-invoice">
+    <path d="M-58-74h86l30 30v118h-116Z" fill="#ffffff" stroke="#2a1260" stroke-width="9"/>
+    <path d="M28-74v30h30" fill="#e4e0ef" stroke="#2a1260" stroke-width="7"/>
+    <rect x="-42" y="-58" width="48" height="14" rx="4" fill="#5b2bb8"/>
+    <path d="M-40-22h80M-40-6h56M-40 10h72M-40 26h40" fill="none" stroke="#c9c4d8" stroke-width="7"/>
+    <path d="M-40 44h80" fill="none" stroke="#2a1260" stroke-width="4"/>
+    <path d="M6 60h34" fill="none" stroke="#3f9a59" stroke-width="9"/>
+  </g>
+  <g id="cat-coin">
+    <path d="M-46 0v16a46 14 0 0 0 92 0v-16" fill="#e89a12" stroke="#2a1260" stroke-width="7"/>
+    <ellipse rx="46" ry="14" fill="#ffc53d" stroke="#2a1260" stroke-width="7"/>
+  </g>
+</defs>
+<g stroke-linejoin="round" stroke-linecap="round">
+  <g fill="#2a1260" stroke="#2a1260" stroke-width="24">
+    <path d="M384 432C452 430 470 370 446 330" fill="none" stroke-width="50"/>
+    <rect x="166" y="430" width="66" height="50" rx="24"/>
+    <rect x="280" y="430" width="66" height="50" rx="24"/>
+    <ellipse cx="256" cy="372" rx="146" ry="94"/>
+    <path d="M150 140L160 50L228 108Z"/>
+    <path d="M362 140L352 50L284 108Z"/>
+    <path d="M136 206L104 220L128 230L108 246L140 252Z"/>
+    <path d="M376 206L408 220L384 230L404 246L372 252Z"/>
+    <ellipse cx="256" cy="204" rx="128" ry="102"/>
+  </g>
+  <g fill="#c9c4d8">
+    <path d="M384 432C452 430 470 370 446 330" fill="none" stroke="#c9c4d8" stroke-width="26"/>
+    <rect x="166" y="430" width="66" height="50" rx="24"/>
+    <rect x="280" y="430" width="66" height="50" rx="24"/>
+    <ellipse cx="256" cy="372" rx="146" ry="94"/>
+    <path d="M150 140L160 50L228 108Z"/>
+    <path d="M362 140L352 50L284 108Z"/>
+    <path d="M136 206L104 220L128 230L108 246L140 252Z"/>
+    <path d="M376 206L408 220L384 230L404 246L372 252Z"/>
+    <ellipse cx="256" cy="204" rx="128" ry="102"/>
+  </g>
+  <!-- Belly, then the front legs: fur from the chest down to the paws, outlined either side
+       only from where they reach the belly, so there is no seam where they join the chest. -->
+  <ellipse cx="256" cy="446" rx="100" ry="116" fill="#f1eff7" clip-path="url(#cat-body)"/>
+  <path d="M196 316Q178 372 156 414M316 316Q346 352 366 378" fill="none" stroke="#c9c4d8" stroke-width="44"/>
+  <path d="M164 324L162 331L159 337L157 343L155 348L153 354L150 360L148 365L146 371L143 376L141 381L139 386L136 391L134 396L131 401M217 343L214 349L212 356L209 362L207 369L205 375L202 381L200 387L197 393L194 399L192 405L189 411L186 416L184 422L181 427M304 345L307 349L310 353L314 357L317 361L320 365L323 368L326 372L328 375L331 379L334 382L336 386L339 389L341 392L344 395M347 309L350 314L354 318L357 322L360 326L363 329L366 333L369 337L372 341L375 344L378 348L381 351L383 354L386 358L388 361" fill="none" stroke="#2a1260" stroke-width="12"/>
+  <!-- Toes, inner ears, forehead stripes -->
+  <path d="M188 464v14M210 464v14M302 464v14M324 464v14" stroke="#2a1260" stroke-width="5"/>
+  <path d="M168 124L174 78L210 110Z" fill="#f2a0bd" stroke="#f2a0bd" stroke-width="10"/>
+  <path d="M344 124L338 78L302 110Z" fill="#f2a0bd" stroke="#f2a0bd" stroke-width="10"/>
+  <path d="M256 112v26M232 116l6 20M280 116l-6 20" fill="none" stroke="#a8a1c0" stroke-width="8"/>
+  <!-- Muzzle -->
+  <ellipse cx="236" cy="268" rx="28" ry="22" fill="#f1eff7"/>
+  <ellipse cx="276" cy="268" rx="28" ry="22" fill="#f1eff7"/>
+  <!-- Eyes: half-lidded, reading the invoices down to the left -->
+  <ellipse cx="208" cy="208" rx="22" ry="24" fill="#ffffff"/>
+  <ellipse cx="304" cy="208" rx="22" ry="24" fill="#ffffff"/>
+  <g clip-path="url(#cat-eye-l)">
+    <ellipse cx="198" cy="220" rx="10" ry="12" fill="#2a1260"/>
+    <path d="M180 180h56v24l-56 2Z" fill="#c9c4d8"/>
+    <path d="M180 206l56-2" stroke="#2a1260" stroke-width="6"/>
+  </g>
+  <g clip-path="url(#cat-eye-r)">
+    <ellipse cx="294" cy="220" rx="10" ry="12" fill="#2a1260"/>
+    <path d="M276 180h56v22l-56 2Z" fill="#c9c4d8"/>
+    <path d="M276 204l56-2" stroke="#2a1260" stroke-width="6"/>
+  </g>
+  <!-- Glasses: round lenses with a glint, bridge, arms back to the ears -->
+  <path d="M166 200L128 186M346 200L384 186" fill="none" stroke="#2a1260" stroke-width="9"/>
+  <circle cx="208" cy="208" r="40" fill="#ffffff" fill-opacity="0.18" stroke="#2a1260" stroke-width="12"/>
+  <circle cx="304" cy="208" r="40" fill="#ffffff" fill-opacity="0.18" stroke="#2a1260" stroke-width="12"/>
+  <path d="M248 204q8-10 16 0" fill="none" stroke="#2a1260" stroke-width="10"/>
+  <path d="M184 190q8-12 22-14M280 190q8-12 22-14" fill="none" stroke="#ffffff" stroke-width="6"/>
+  <!-- Nose, mouth pursed in concentration, whiskers -->
+  <path d="M245 250h22l-11 11Z" fill="#e8668f" stroke="#e8668f" stroke-width="8"/>
+  <path d="M256 262v8M240 276q8 6 16-4q8 10 16 4" fill="none" stroke="#2a1260" stroke-width="6"/>
+  <path d="M206 266l-52-8M206 278l-50 6M306 266l52-8M306 278l50 6" stroke="#2a1260" stroke-width="5"/>
+  <!-- Invoices held up in the left paw -->
+  <use href="#cat-invoice" transform="translate(112 352) rotate(-22)"/>
+  <use href="#cat-invoice" transform="translate(142 356) rotate(-6)"/>
+  <!-- A stack of coins on the floor -->
+  <use href="#cat-coin" transform="translate(378 450)"/>
+  <use href="#cat-coin" transform="translate(378 432)"/>
+  <use href="#cat-coin" transform="translate(378 414)"/>
+  <use href="#cat-coin" transform="translate(378 396)"/>
+  <!-- Paws, over the invoices and the top coin -->
+  <ellipse cx="156" cy="420" rx="36" ry="26" fill="#c9c4d8" stroke="#2a1260" stroke-width="9"/>
+  <path d="M144 402v14M166 402v14" stroke="#2a1260" stroke-width="5"/>
+  <ellipse cx="368" cy="384" rx="36" ry="24" fill="#c9c4d8" stroke="#2a1260" stroke-width="9"/>
+  <path d="M356 368v14M378 368v14" stroke="#2a1260" stroke-width="5"/>
+</g>
+</svg>

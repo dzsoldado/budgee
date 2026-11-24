@@ -1,0 +1,360 @@
+/* Connect, pair and restore screens, the recovery key, the pairing QR code and the device list
+   (Settings.dc.html's card, row and button values). Logical properties and tokens only. */
+
+/* ─── Screens ─────────────────────────────────────────────────────────── */
+
+.pair-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.pair-title:focus {
+  outline: none;
+}
+
+.pair-subtitle {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.pair-text {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* A plain warning: soft expense colors, never the error red of a failed action. */
+.pair-warning {
+  padding-block: 10px;
+  padding-inline: 12px;
+  border-radius: 12px;
+  background: var(--expense-soft);
+  color: var(--expense-ink);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.pair-wide {
+  inline-size: 100%;
+  block-size: 44px;
+}
+
+.pair-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pair-actions .btn {
+  block-size: 44px;
+}
+
+.pair-problem {
+  padding-inline: 4px;
+}
+
+.pairing .card .field-error:empty {
+  display: none;
+}
+
+/* The primary button reads as off until the box is ticked, but stays focusable. */
+.btn-primary[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* "I saved it": a 44px row around a native checkbox. */
+.check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-block-size: 44px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.check input {
+  flex-shrink: 0;
+  inline-size: 22px;
+  block-size: 22px;
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+.input-key {
+  block-size: auto;
+  padding-block: 10px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 15px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+/* ─── Recovery key ────────────────────────────────────────────────────── */
+
+.recovery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.recovery-key {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 2px;
+  inline-size: 100%;
+  padding-block: 14px;
+  padding-inline: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--sunken);
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  user-select: all;
+}
+
+.recovery-group {
+  white-space: nowrap;
+}
+
+.recovery-copy {
+  inline-size: 100%;
+  block-size: 44px;
+}
+
+.recovery-copied:empty {
+  display: none;
+}
+
+.recovery-dialog .recovery {
+  margin-block-start: 14px;
+}
+
+/* ─── QR codes: dark on white in both themes, 4 modules of quiet zone ─── */
+
+.qr {
+  flex-shrink: 0;
+  inline-size: 240px;
+  block-size: 240px;
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.qr svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  fill: var(--ink);
+}
+
+/* The recovery key's QR code holds less text: smaller is still easy to scan. */
+.recovery .qr {
+  inline-size: 200px;
+  block-size: 200px;
+}
+
+/* ─── Add device ──────────────────────────────────────────────────────── */
+
+.add-device {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-device .confirm-body {
+  margin-block-start: 6px;
+}
+
+.add-device-qr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  inline-size: 240px;
+  block-size: 240px;
+  border-radius: 8px;
+  outline: 1px solid var(--line);
+}
+
+.add-device-expired {
+  background: var(--sunken);
+}
+
+.add-device-expired-text {
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.add-device-code {
+  font-size: 14px;
+  text-align: center;
+}
+
+.add-device-code-value {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.add-device-timer {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.add-device .hint:empty {
+  display: none;
+}
+
+.add-device .confirm-actions {
+  margin-block-start: 4px;
+}
+
+/* ─── Camera ──────────────────────────────────────────────────────────── */
+
+.scanner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.scanner-view {
+  position: relative;
+  overflow: hidden;
+  inline-size: 100%;
+  max-inline-size: 320px;
+  aspect-ratio: 1;
+  align-self: center;
+  border-radius: 12px;
+  background: var(--sunken);
+}
+
+.scanner-video {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.scanner-frame {
+  position: absolute;
+  inset: 18%;
+  border: 3px solid var(--on-primary);
+  border-radius: 12px;
+}
+
+/* ─── Settings: joining a server ──────────────────────────────────────── */
+
+.settings-join {
+  justify-content: flex-start;
+}
+
+.settings-join > .settings-item-text {
+  flex: 1;
+}
+
+.settings-join-icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--primary-ink);
+}
+
+/* ─── Settings: device list ───────────────────────────────────────────── */
+
+.settings-device + .settings-device {
+  border-block-start: 1px solid var(--line-soft);
+}
+
+.settings-device-main {
+  flex: 1;
+  min-block-size: 44px;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: start;
+}
+
+.settings-device-main:focus-visible {
+  outline-offset: 4px;
+}
+
+.settings-device-revoked .settings-item-name,
+.settings-device-revoked .settings-device-icon {
+  color: var(--muted);
+}
+
+.device-badge {
+  display: inline-flex;
+  align-items: center;
+  block-size: 20px;
+  padding-inline: 8px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary-ink);
+  font-size: 11px;
+  font-weight: 600;
+  vertical-align: 2px;
+  white-space: nowrap;
+}
+
+/* Revoke (Settings.dc.html): 36px tall, 44px to tap. */
+.settings-revoke {
+  flex-shrink: 0;
+  block-size: 36px;
+  padding-inline: 12px;
+  border-radius: 10px;
+}
+
+.settings-device-status {
+  justify-content: space-between;
+}
+
+.settings-device-error {
+  flex: 1;
+}
+
+/* "Forget pairing on this device": a quiet text button under the card. */
+.settings-text-btn {
+  align-self: flex-start;
+  min-block-size: 44px;
+  padding-block: 0;
+  padding-inline: 4px;
+  border: 0;
+  background: transparent;
+  color: var(--expense-ink);
+  font:
+    500 14px Inter,
+    sans-serif;
+}
+
+/* Device rows that open the rename dialog: the name and a chevron. */
+.settings-device-open {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-device-open > .settings-item-text {
+  flex: 1;
+}
+
+.settings-device-open > svg {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+/* Pairing codes are typed in capitals and read like the recovery key. */
+.input-code {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": {
+    "includes": ["**", "!docs", "!pm", "!.mcp.json", "!.claude"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "linter": {
+    "enabled": true,
+    "rules": { "preset": "recommended" }
+  },
+  "assist": {
+    "actions": { "source": { "organizeImports": "on" } }
+  },
+  "overrides": [
+    {
+      "includes": ["apps/server/src/**", "packages/core/src/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noNodejsModules": "error"
+          },
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "bun": "apps/server/src and packages/core/src must stay platform-free: only apps/server/adapters/ and entry/ may use Bun."
+                },
+                "patterns": [
+                  {
+                    "group": ["cloudflare:*", "bun:*", "node:*"],
+                    "message": "apps/server/src and packages/core/src must stay platform-free: only apps/server/adapters/ and entry/ may import cloudflare:*, bun:* or node:*."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

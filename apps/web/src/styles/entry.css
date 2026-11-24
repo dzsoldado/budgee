@@ -1,0 +1,510 @@
+/* Add / edit, with the exact values of Add.dc.html. Phones: full screen (no tab bar), Save in
+   a sticky footer. From 1024px: the same form centered in the content column. The mockup sets
+   no line height, so the screen uses the font's own. */
+
+.editor-screen {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvh;
+  line-height: normal;
+}
+
+.editor-header {
+  display: grid;
+  grid-template-columns: minmax(44px, 1fr) auto minmax(44px, 1fr);
+  align-items: center;
+  padding-block: 8px 4px;
+  padding-inline: 8px;
+}
+
+.editor-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 44px;
+  block-size: 44px;
+  border-radius: 12px;
+  color: var(--ink);
+}
+
+.editor-close:hover {
+  color: var(--ink);
+  background: var(--sunken);
+}
+
+.editor-title {
+  font:
+    600 18px "Space Grotesk",
+    sans-serif;
+  text-align: center;
+}
+
+.editor-header-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.editor-form {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.editor-fields {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 14px;
+  padding-block: 4px 0;
+  padding-inline: 16px;
+}
+
+/* A field that focus scrolls into view stops above the sticky Save footer. */
+.editor-fields :is(input, select, button) {
+  scroll-margin-block-end: 96px;
+}
+
+/* ─── Amount ──────────────────────────────────────────────────────────── */
+
+.editor-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding-block-start: 4px;
+}
+
+.editor-amount-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.editor-amount-input {
+  inline-size: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font:
+    600 46px "Space Grotesk",
+    sans-serif;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.editor-amount-input::placeholder {
+  color: var(--muted);
+}
+
+/* Drawn without a border; an underline shows focus. */
+.editor-amount-input:focus-visible {
+  outline: none;
+  box-shadow: 0 2px 0 var(--primary);
+}
+
+/* ─── Paid in another currency ────────────────────────────────────────── */
+
+.foreign {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-block: 12px;
+  padding-inline: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.foreign-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.foreign-title {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.foreign-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.foreign .hint {
+  margin: 0;
+}
+
+/* Inputs inside the card sit on the page background. */
+.input-sunk {
+  background: var(--bg);
+  font-weight: 600;
+}
+
+.select {
+  padding-inline: 10px;
+}
+
+/* ─── Fields ──────────────────────────────────────────────────────────── */
+
+.field-note {
+  font-weight: 400;
+}
+
+.input-note {
+  font-weight: 400;
+}
+
+.editor-form .input:focus,
+.date-box:focus-within,
+.tag-box:focus-within {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.editor-form .input[aria-invalid="true"],
+.date-box:has([aria-invalid="true"]),
+.tag-box-invalid {
+  border-color: var(--expense-ink);
+}
+
+.field-error {
+  color: var(--expense-ink);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.field-error:empty {
+  display: none;
+}
+
+.editor-amount .field-error {
+  text-align: center;
+}
+
+.date-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  block-size: 44px;
+  padding-block: 0;
+  padding-inline: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.date-input {
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font:
+    500 15px Inter,
+    sans-serif;
+}
+
+/* The drawn calendar icon sits at the start; a click opens the picker. */
+.date-input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+/* ─── Category chips ──────────────────────────────────────────────────── */
+
+.choice-group {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.choice-legend {
+  margin-block-end: 8px;
+  padding: 0;
+}
+
+.choice-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.choice-group .field-error {
+  margin-block-start: 6px;
+}
+
+.choice-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  block-size: 38px;
+  padding-block: 0;
+  padding-inline: 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font:
+    500 14px Inter,
+    sans-serif;
+  white-space: nowrap;
+}
+
+/* 44px touch targets for controls drawn smaller (as in components.css). */
+.choice-chip::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block: min(0px, calc(50% - 22px));
+}
+
+.tag-remove::after {
+  content: "";
+  position: absolute;
+  inset: min(0px, calc(50% - 22px));
+}
+
+.choice-chip[aria-pressed="true"] {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+/* ─── Suggestions (detail and tags) ───────────────────────────────────── */
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  list-style: none;
+}
+
+.suggestion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-block-size: 44px;
+  padding-block: 0;
+  padding-inline: 10px;
+  border-radius: 8px;
+  color: var(--ink);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.suggestion:hover {
+  background: var(--sunken);
+}
+
+.suggestion[aria-selected="true"] {
+  background: var(--primary-soft);
+}
+
+.suggestion-text b {
+  font-weight: 600;
+}
+
+.suggestion-meta {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ─── Tags ────────────────────────────────────────────────────────────── */
+
+.tag-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-block-size: 44px;
+  padding-block: 5px;
+  padding-inline: 6px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  cursor: text;
+}
+
+.tag-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  block-size: 32px;
+  padding-block: 0;
+  padding-inline: 10px 2px;
+  border-radius: 8px;
+  background: var(--primary-soft);
+  color: var(--primary-ink);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: default;
+}
+
+.tag-remove {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 28px;
+  block-size: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--primary-ink);
+}
+
+.tag-input {
+  flex: 1;
+  min-inline-size: 90px;
+  block-size: 32px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font:
+    400 15px Inter,
+    sans-serif;
+}
+
+.tag-input::placeholder {
+  color: var(--muted);
+}
+
+/* ─── Footer ──────────────────────────────────────────────────────────── */
+
+.editor-footer {
+  position: sticky;
+  inset-block-end: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-block: 12px calc(20px + env(safe-area-inset-bottom));
+  padding-inline: 16px;
+  background: var(--bg);
+}
+
+.editor-save {
+  inline-size: 100%;
+  block-size: 52px;
+  border-radius: 14px;
+  font-size: 16px;
+}
+
+/* ─── Not found ───────────────────────────────────────────────────────── */
+
+.editor-missing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-block: 16px;
+  margin-inline: 16px;
+  padding-block: 32px;
+  padding-inline: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.editor-missing-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.editor-missing .btn {
+  margin-block-start: 8px;
+}
+
+/* ─── Confirm dialog (components/ConfirmDialog.tsx) ───────────────────── */
+
+.confirm {
+  inline-size: min(400px, calc(100% - 32px));
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  line-height: normal;
+}
+
+.confirm::backdrop {
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+
+.confirm-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.confirm-body {
+  margin-block-start: 6px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-block-start: 20px;
+}
+
+.confirm-danger {
+  border: 1px solid var(--line);
+}
+
+/* ─── Wide screens: centered in the content column ────────────────────── */
+
+@media (min-width: 1024px) {
+  .editor-screen {
+    min-block-size: auto;
+    max-inline-size: 560px;
+    margin-inline: auto;
+    padding-block: 28px 40px;
+  }
+
+  .editor-header {
+    padding-block: 0 8px;
+    padding-inline: 0;
+  }
+
+  .editor-fields {
+    padding-inline: 0;
+  }
+
+  /* Still sticky, at the bottom of the content column, so Save stays in view. */
+  .editor-footer {
+    padding-block: 16px 24px;
+    padding-inline: 0;
+  }
+
+  .editor-missing {
+    margin-inline: 0;
+  }
+}

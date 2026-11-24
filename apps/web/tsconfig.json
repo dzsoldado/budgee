@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "allowImportingTsExtensions": true,
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client", "vite-plugin-pwa/solid"]
+  },
+  "include": ["src", "vite", "vite.config.ts"]
+}

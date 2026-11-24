@@ -1,0 +1,68 @@
+# Budgee with Docker Compose. Settings come from .env (copy .env.example); see DEPLOY.md.
+#   docker compose up -d    the app alone, at http://127.0.0.1:8787
+# A front end comes with COMPOSE_PROFILES in .env: tailscale (HTTPS through Tailscale Funnel or
+# serve) or caddy (HTTPS for your own DOMAIN). With `--profile` on the command line instead, also
+# set TRUST_PROXY=1 in .env.
+name: budgee
+
+services:
+  app:
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # Fixed inside the container, whatever .env says: the image's paths and port.
+      HOST: 0.0.0.0
+      PORT: "8787"
+      DATABASE_PATH: /data/budgee.sqlite
+      WEB_DIST: /app/apps/web/dist
+      # The rate limit trusts X-Forwarded-For only behind a front end: TRUST_PROXY from .env, or
+      # on by itself when COMPOSE_PROFILES there names one.
+      TRUST_PROXY: ${TRUST_PROXY:-${COMPOSE_PROFILES:+1}}
+    volumes:
+      - budgee-data:/data
+    ports:
+      # This machine only. From elsewhere, go through a front end.
+      - 127.0.0.1:8787:8787
+    restart: unless-stopped
+
+  tailscale:
+    image: tailscale/tailscale:stable
+    profiles: [tailscale]
+    hostname: ${TS_HOSTNAME:-budgee}
+    environment:
+      TS_AUTHKEY: ${TS_AUTHKEY:-}
+      TS_HOSTNAME: ${TS_HOSTNAME:-budgee}
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_SERVE_CONFIG: /config/serve.json
+    volumes:
+      - ts-state:/var/lib/tailscale
+      # funnel: public at https://<TS_HOSTNAME>.<tailnet>.ts.net; private: your tailnet only.
+      - ./deploy/tailscale/${TS_MODE:-funnel}.json:/config/serve.json:ro
+    depends_on:
+      - app
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    profiles: [caddy]
+    environment:
+      DOMAIN: ${DOMAIN:-}
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    volumes:
+      - ./deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  budgee-data:
+  ts-state:
+  caddy-data:
+  caddy-config:

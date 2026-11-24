@@ -1,0 +1,285 @@
+/* CSV: the Data section's live file row, the export dialog and the import wizard. Built from the
+   Foundations components (cards, fields, badges, list rows); tokens and logical properties only. */
+
+/* ─── Settings → Your data ────────────────────────────────────────────── */
+
+a.settings-action {
+  text-decoration: none;
+}
+
+.settings-action:focus-visible {
+  outline-offset: -2px;
+}
+
+.live-file {
+  padding-block: 10px;
+}
+
+.live-file-text {
+  flex: 1;
+}
+
+.live-file-problem {
+  color: var(--expense-ink);
+}
+
+.live-file-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ─── Export dialog ───────────────────────────────────────────────────── */
+
+.export-form {
+  gap: 16px;
+}
+
+.export-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.export-group > legend {
+  margin-block-end: 8px;
+  padding: 0;
+}
+
+.export-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-block-size: 56px;
+  padding-block: 8px;
+  padding-inline: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.export-choice:has(input:checked) {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.export-choice:has(input:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.export-choice input {
+  flex-shrink: 0;
+  inline-size: 20px;
+  block-size: 20px;
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+.export-choice input:focus-visible {
+  outline: none;
+}
+
+/* ─── Import wizard ───────────────────────────────────────────────────── */
+
+.import-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.import-step {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.import-columns {
+  display: grid;
+  gap: 14px 16px;
+}
+
+@media (min-width: 640px) {
+  .import-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.import-field-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.import-need {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.import .select[aria-invalid="true"] {
+  border-color: var(--expense);
+}
+
+.import .hint:empty {
+  display: none;
+}
+
+.import-facts dd {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.import-facts dd.import-fact-error {
+  color: var(--expense-ink);
+}
+
+.import-view {
+  align-self: flex-start;
+}
+
+.import-rows {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  list-style: none;
+}
+
+.import-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-block: 10px;
+  padding-inline: 12px;
+}
+
+.import-row + .import-row {
+  border-block-start: 1px solid var(--line-soft);
+}
+
+.import-row-error {
+  padding-inline-start: 9px;
+  border-inline-start: 3px solid var(--expense);
+}
+
+.import-row-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.import-line {
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.import-badge {
+  padding-block: 2px;
+  padding-inline: 6px;
+  border-radius: 6px;
+  background: var(--sunken);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.import-badge-error {
+  background: var(--expense-soft);
+  color: var(--expense-ink);
+}
+
+.import-row-main {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.import-row-title {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.import-row-amount {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.import-row-meta {
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.import-issues {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding-inline-start: 18px;
+  color: var(--expense-ink);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.import-names {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.import-names > legend {
+  padding: 0;
+}
+
+/* New expense categories, then new income ones. */
+.import-names-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.import-names-group > legend {
+  margin-block-start: 8px;
+  padding: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.import-name {
+  min-block-size: 52px;
+}
+
+.import-pair-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.import-pair-hint > .settings-text-btn {
+  color: var(--primary-ink);
+}

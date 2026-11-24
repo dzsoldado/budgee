@@ -1,0 +1,11 @@
+{
+  "name": "@budgee/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@budgee/core": "workspace:*",
+    "hono": "4.13.19",
+    "valibot": "1.5.0"
+  }
+}

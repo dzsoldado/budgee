@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.data/
+.wrangler/
+.env*
+!.env.example
+.dev.vars
+.superpowers/
+.playwright-mcp/
+.pm/
+.claude/
+docs/

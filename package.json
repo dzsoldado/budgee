@@ -1,0 +1,26 @@
+{
+  "name": "budgee",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "bun --env-file=.env.local scripts/dev.ts",
+    "test": "bun test",
+    "gen:migrations": "bun scripts/gen-migrations.ts",
+    "gen:icons": "bun scripts/gen-icons.ts",
+    "decrypt-backup": "bun scripts/decrypt-backup.ts",
+    "lint": "bunx biome check .",
+    "format": "bunx biome format --write .",
+    "build": "bun run --cwd apps/web build",
+    "typecheck": "bunx tsc -p packages/core && bunx tsc -p apps/server && bunx tsc -p apps/web && bunx tsc -p apps/web/test && bunx tsc -p scripts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@resvg/resvg-js": "2.6.2",
+    "@types/bun": "1.4.4",
+    "typescript": "7.0.2"
+  }
+}

@@ -1,0 +1,457 @@
+/* Shared components, with the exact values of Foundations.dc.html, Add.dc.html and
+   Settings.dc.html. Logical properties only. */
+
+/* Buttons, chips, switches and segments are drawn less than 44px high; this invisible layer
+   keeps their touch target at least 44px high without changing the drawing. */
+.btn,
+.chip,
+.switch,
+.segmented > label {
+  position: relative;
+}
+
+.btn::after,
+.chip::after,
+.switch::after,
+.segmented > label::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block: min(0px, calc(50% - 22px));
+}
+
+/* ─── Buttons ─────────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  block-size: 40px;
+  padding-block: 0;
+  padding-inline: 16px;
+  border: 0;
+  border-radius: 12px;
+  font:
+    500 14px Inter,
+    sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 600;
+}
+
+.btn-secondary {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+/* Destructive and quiet: Revoke, Delete. */
+.btn-danger {
+  padding-inline: 10px;
+  background: transparent;
+  color: var(--expense-ink);
+}
+
+/* ─── Chips ───────────────────────────────────────────────────────────── */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  block-size: 32px;
+  padding-block: 0;
+  padding-inline: 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font:
+    400 13px Inter,
+    sans-serif;
+  white-space: nowrap;
+}
+
+.chip[aria-pressed="true"] {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 600;
+}
+
+/* A tag (or an active filter): purple outline on the soft fill. */
+.chip-tag {
+  padding-inline: 10px;
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-ink);
+  font-weight: 500;
+}
+
+/* ─── Segmented control (components/Segmented.tsx: labels around native radios) ── */
+
+.segmented {
+  display: inline-flex;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--sunken);
+}
+
+.segmented > label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 34px;
+  padding-inline: 10px;
+  border-radius: 8px;
+  color: var(--muted);
+  font:
+    500 13px Inter,
+    sans-serif;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* The radio stays in the accessibility tree and keyboard order, drawn by its label. */
+.segmented input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.segmented > label:has(input:checked) {
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.segmented > label:has(input:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.segmented > label:has(input:disabled) {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Full-width two-way toggle (Expense / Income). */
+.segmented-wide {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+}
+
+.segmented-wide > label {
+  block-size: 40px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.segmented-wide > label:has(input:checked) {
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.segmented > .segment-expense:has(input:checked) {
+  color: var(--expense-ink);
+}
+
+.segmented > .segment-income:has(input:checked) {
+  color: var(--income-ink);
+}
+
+/* ─── Switch ──────────────────────────────────────────────────────────── */
+
+.switch {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: flex-start;
+  inline-size: 48px;
+  block-size: 28px;
+  padding: 3px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--axis);
+}
+
+.switch::before {
+  content: "";
+  inline-size: 22px;
+  block-size: 22px;
+  border-radius: 50%;
+  background: var(--on-primary);
+}
+
+.switch[aria-checked="true"] {
+  justify-content: flex-end;
+  background: var(--primary);
+}
+
+/* ─── Fields ──────────────────────────────────────────────────────────── */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.input {
+  inline-size: 100%;
+  block-size: 44px;
+  padding-block: 0;
+  padding-inline: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font:
+    500 15px Inter,
+    sans-serif;
+}
+
+.input::placeholder {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* ─── Cards and sections ──────────────────────────────────────────────── */
+
+.card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-title {
+  padding-inline: 4px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* ─── Layout helpers ──────────────────────────────────────────────────── */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.row-tight {
+  gap: 6px;
+}
+
+.row-between {
+  justify-content: space-between;
+}
+
+/* ─── Filter picker (components/FilterPicker.tsx) ─────────────────────── */
+
+.picker {
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  line-height: normal;
+}
+
+.picker:focus {
+  outline: none;
+}
+
+.picker-popover {
+  position: absolute;
+  min-inline-size: 240px;
+  max-inline-size: 320px;
+  border-radius: 12px;
+}
+
+.picker-sheet {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  max-block-size: 70dvh;
+  padding-block-end: env(safe-area-inset-bottom);
+  border-block-end: 0;
+  border-start-start-radius: 16px;
+  border-start-end-radius: 16px;
+}
+
+/* Dims the page behind a sheet, in either theme. */
+.picker-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+
+.picker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-block: 6px 2px;
+  padding-inline: 16px 6px;
+}
+
+.picker-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.picker-done {
+  padding-inline: 10px;
+  background: transparent;
+  color: var(--primary-ink);
+  font-weight: 600;
+}
+
+.picker-actions {
+  display: flex;
+  align-items: center;
+}
+
+.picker-clear {
+  padding-inline: 10px;
+  background: transparent;
+  color: var(--muted);
+}
+
+/* The amount filter's panel body (screens/list/AmountFilter.tsx). */
+.amount-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-block: 6px 16px;
+  padding-inline: 16px;
+}
+
+.amount-filter .segmented {
+  display: flex;
+}
+
+.amount-filter .segmented > label {
+  flex: 1;
+}
+
+.amount-filter .input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.picker-list {
+  overflow-y: auto;
+  padding-block: 2px 8px;
+  padding-inline: 6px;
+}
+
+.picker-popover .picker-list {
+  max-block-size: 320px;
+}
+
+.picker-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-block-size: 44px;
+  padding-inline: 10px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.picker-option:hover {
+  background: var(--sunken);
+}
+
+.picker-option:focus-visible {
+  outline-offset: -2px;
+}
+
+.picker-option[aria-selected="true"] {
+  font-weight: 600;
+}
+
+.picker-check {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  inline-size: 20px;
+  block-size: 20px;
+  border: 1px solid var(--axis);
+  border-radius: 6px;
+  color: transparent;
+}
+
+.picker-option[aria-selected="true"] .picker-check {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.picker-group {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.picker-group-label {
+  padding-block: 10px 4px;
+  padding-inline: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.picker-empty {
+  padding-block: 0 14px;
+  padding-inline: 16px;
+}
