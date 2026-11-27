@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import * as v from "valibot";
 import {
   type ChartData,
   comparisonWindows,
@@ -12,12 +13,13 @@ import {
   type TableChart,
 } from "../src/dashboard";
 import { DEFAULT_CHART_CONFIGS, GALLERY_PRESETS } from "../src/defaults";
-import type {
-  ChartConfig,
-  DashboardSettings,
-  LiveTransaction,
-  Tombstone,
-  TransactionRow,
+import {
+  type ChartConfig,
+  chartConfigSchema,
+  type DashboardSettings,
+  type LiveTransaction,
+  type Tombstone,
+  type TransactionRow,
 } from "../src/schema";
 
 // ─── Fixture ────────────────────────────────────────────────────────────────
@@ -247,6 +249,72 @@ describe("periods", () => {
   });
 });
 
+describe("a chosen month or year", () => {
+  test("a month period shows the month it names, whatever the dashboard shows", () => {
+    expect(resolvePeriod("month", ctx({ period: "year" }), undefined, "2025-02")).toEqual({
+      start: "2025-02-01",
+      end: "2025-02-28",
+      fullEnd: "2025-02-28",
+      partial: false,
+      months: 1,
+    });
+  });
+
+  test("a year period shows the year of its month", () => {
+    expect(resolvePeriod("year", ctx(), undefined, "2024-07")).toEqual({
+      start: "2024-01-01",
+      end: "2024-12-31",
+      fullEnd: "2024-12-31",
+      partial: false,
+      months: 12,
+    });
+  });
+
+  test("the current month or year runs to today; a later or missing one is today's", () => {
+    const current = {
+      start: "2026-11-01",
+      end: "2026-11-17",
+      fullEnd: "2026-11-30",
+      partial: true,
+      months: 1,
+    };
+    expect(resolvePeriod("month", ctx(), undefined, "2026-11")).toEqual(current);
+    expect(resolvePeriod("month", ctx(), undefined, "2027-01")).toEqual(current);
+    expect(resolvePeriod("month", ctx())).toEqual(current);
+    expect(resolvePeriod("year", ctx(), undefined, "2028-01")).toMatchObject({
+      start: "2026-01-01",
+      end: "2026-11-17",
+    });
+  });
+
+  test("a chart on a chosen month counts that month and compares with the one before", () => {
+    const data = computeChart(
+      chart({
+        kind: "bar",
+        groupBy: "category",
+        period: "month",
+        periodRef: "2026-10",
+        compare: "previous_period",
+      }),
+      FIXTURE,
+      ctx(),
+    );
+    expect(data.window).toEqual({ start: "2026-10-01", end: "2026-10-31" });
+    expect(data.shape === "series" && data.compareWindows).toEqual([
+      { start: "2026-09-01", end: "2026-09-30" },
+    ]);
+  });
+
+  test("the schema takes a YYYY-MM month and nothing else", () => {
+    const parse = (periodRef: string) =>
+      v.safeParse(chartConfigSchema, { ...chart({ period: "month" }), periodRef }).success;
+    expect(parse("2025-02")).toBe(true);
+    expect(parse("2025-13")).toBe(false);
+    expect(parse("2025")).toBe(false);
+    expect(parse("2025-02-01")).toBe(false);
+  });
+});
+
 describe("comparison windows", () => {
   const nov = { start: "2026-11-01", end: "2026-11-17" };
 
@@ -362,6 +430,19 @@ describe("data start", () => {
         ctxNone,
       ),
     ).toBe("2024-12-01");
+  });
+
+  test("a chart on a chosen month or year reads from there", () => {
+    const ctxNone = ctx({ compare: "none" });
+    expect(dataStart(configs({ period: "year", periodRef: "2023-05" }), ctxNone)).toBe(
+      "2023-01-01",
+    );
+    expect(
+      dataStart(
+        configs({ period: "month", periodRef: "2024-03", compare: "previous_period" }),
+        ctxNone,
+      ),
+    ).toBe("2024-02-01");
   });
 
   test("reading from the data start computes the same charts as reading everything", () => {

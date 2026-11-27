@@ -56,6 +56,8 @@ export const PERIODS: readonly ChartPeriod[] = [
   "last_12_months",
   "this_year",
   "all_time",
+  "month",
+  "year",
 ];
 export const COMPARES: readonly ChartCompare[] = [
   "same_period_last_year",
@@ -92,6 +94,36 @@ export const metricApplies = (c: ChartConfig) => c.kind !== "table";
 export const compareApplies = (c: ChartConfig) => isSeries(c.kind) && c.period !== "all_time";
 export const cumulativeApplies = (c: ChartConfig) => isSeries(c.kind) && isTime(c.groupBy);
 export const limitApplies = (c: ChartConfig) => isOpen(c.groupBy);
+/** A chosen month or year: the chart shows the one `periodRef` names. */
+export const periodRefApplies = (c: ChartConfig) => c.period === "month" || c.period === "year";
+
+/**
+ * What a chosen month (`YYYY-MM`) or year (`YYYY`) can be, newest first: from the first entry's
+ * to today's, plus `current` (the stored choice) when it lies outside that.
+ */
+export function periodChoices(
+  unit: "month" | "year",
+  earliest: string | null,
+  today: string,
+  current: string | undefined,
+): string[] {
+  const cut = (date: string) => (unit === "month" ? date.slice(0, 7) : date.slice(0, 4));
+  const step = (value: string) => {
+    if (unit === "year") return String(Number(value) - 1).padStart(4, "0");
+    const total = Number(value.slice(0, 4)) * 12 + Number(value.slice(5, 7)) - 2;
+    return `${String(Math.floor(total / 12)).padStart(4, "0")}-${String((total % 12) + 1).padStart(2, "0")}`;
+  };
+  const last = cut(today);
+  const first = earliest === null || cut(earliest) > last ? last : cut(earliest);
+  const choices: string[] = [];
+  for (let value = last; value >= first; value = step(value)) choices.push(value);
+  const stored = current === undefined ? undefined : cut(current);
+  if (stored !== undefined && !choices.includes(stored)) {
+    choices.push(stored);
+    choices.sort().reverse();
+  }
+  return choices;
+}
 
 /** The grouping a kind falls back to when the current one doesn't suit it. */
 const FALLBACK: Record<Kind, readonly GroupBy[]> = {
@@ -113,13 +145,14 @@ export function changeConfig(config: ChartConfig, patch: Partial<ChartConfig>): 
 
 /** What is previewed and saved: the draft without what doesn't apply, checked by core. */
 export function effectiveConfig(draft: ChartConfig): ChartConfig {
-  const { limit, ...fitted } = changeConfig(draft, {});
+  const { limit, periodRef, ...fitted } = changeConfig(draft, {});
   const config: ChartConfig = {
     ...fitted,
     compare: compareApplies(fitted) ? fitted.compare : "none",
     cumulative: cumulativeApplies(fitted) ? fitted.cumulative : false,
   };
   if (limit !== undefined && limitApplies(fitted)) config.limit = limit;
+  if (periodRef !== undefined && periodRefApplies(fitted)) config.periodRef = periodRef;
   return v.parse(chartConfigSchema, config);
 }
 

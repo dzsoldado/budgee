@@ -101,11 +101,14 @@ export interface ResolvedPeriod {
  * - `last_12_months`: the current calendar month and the 11 before it.
  * - `this_year`: 1 January to 31 December of today's year.
  * - `all_time`: `earliest` (the first entry) to today.
+ * - `month` / `year`: the month `periodRef` (`YYYY-MM`) names, or its year (at most today's;
+ *   today's month or year without one).
  */
 export function resolvePeriod(
   period: ChartConfig["period"],
   ctx: DashboardContext,
   earliest: string = ctx.today,
+  periodRef?: string,
 ): ResolvedPeriod {
   const today = ctx.today;
   const span = (start: string, fullEnd: string, months: number | null): ResolvedPeriod => {
@@ -127,6 +130,13 @@ export function resolvePeriod(
       return span(`${yearOf(today)}-01-01`, `${yearOf(today)}-12-31`, 12);
     case "all_time":
       return span(earliest < today ? earliest : today, today, null);
+    case "month":
+    case "year": {
+      const ref = periodRef !== undefined && `${periodRef}-01` < today ? `${periodRef}-01` : today;
+      return period === "month"
+        ? span(monthStart(ref), monthEnd(ref), 1)
+        : span(`${yearOf(ref)}-01-01`, `${yearOf(ref)}-12-31`, 12);
+    }
   }
 }
 
@@ -179,14 +189,14 @@ const plainWindow = ({ start, end }: DateWindow): DateWindow => ({ start, end })
  * only entries from there on; null when one of them needs every entry (all_time).
  */
 export function dataStart(charts: readonly ChartConfig[], ctx: DashboardContext): string | null {
-  const needs: { period: ChartConfig["period"]; compare: Compare }[] = [
+  const needs: Pick<ChartConfig, "period" | "compare" | "periodRef">[] = [
     { period: "dashboard", compare: ctx.dashboard.compare },
     ...charts,
   ];
   let start: string | null = null;
-  for (const { period, compare } of needs) {
+  for (const { period, compare, periodRef } of needs) {
     if (period === "all_time") return null;
-    const p = resolvePeriod(period, ctx);
+    const p = resolvePeriod(period, ctx, ctx.today, periodRef);
     for (const w of [p, ...comparisonWindows(p, p.months, compare, false)])
       if (start === null || w.start < start) start = w.start;
   }
@@ -629,7 +639,7 @@ export function computeChart(
   ctx: DashboardContext,
 ): ChartData {
   const rows = countedRows(transactions, config, ctx);
-  const period = resolvePeriod(config.period, ctx, earliestDate(rows, ctx.today));
+  const period = resolvePeriod(config.period, ctx, earliestDate(rows, ctx.today), config.periodRef);
   const window = { start: period.start, end: period.end };
   const tagLabels = tagSpellings(transactions);
 

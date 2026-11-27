@@ -54,6 +54,8 @@ import {
   newDraft,
   optionLabel,
   PERIODS,
+  periodChoices,
+  periodRefApplies,
   sameDraft,
   toggleExclusion,
 } from "../../dashboard/editor";
@@ -63,6 +65,7 @@ import { addTag, tagSuggestions } from "../../entry/suggest";
 import { t } from "../../i18n";
 import { todayIso } from "../../lib/date";
 import { sortByOrder } from "../../list/categories";
+import { monthTitle } from "../../list/month";
 import {
   BarsIcon,
   CloseIcon,
@@ -218,6 +221,22 @@ function ChartEditor(props: {
     dashboard: settings().dashboard,
     ref: `${dashboardMonth()}-01`,
   }));
+  /** The first entry's date, where the months and years a chart can be on start. */
+  const earliest = createMemo(() => {
+    let first: string | null = null;
+    for (const row of props.rows() ?? [])
+      if (!row.deleted && (first === null || row.date < first)) first = row.date;
+    return first;
+  });
+  const periodUnit = () => (config().period === "year" ? "year" : "month");
+  const choices = createMemo(() =>
+    periodChoices(periodUnit(), earliest(), ctx().today, config().periodRef),
+  );
+  /** A year keeps the month it had, so going back to a chosen month finds it again. */
+  const setPeriodRef = (value: string) =>
+    patch({
+      periodRef: value.length === 4 ? `${value}${(config().periodRef ?? "-01").slice(4)}` : value,
+    });
   const previewData = createMemo(() => {
     const rows = props.rows();
     return rows && computeChart(previewConfig(), rows, ctx());
@@ -471,8 +490,30 @@ function ChartEditor(props: {
               value={config().period}
               options={PERIODS}
               text={optionLabel.period}
-              onChange={(period) => patch({ period })}
+              onChange={(period) =>
+                patch(
+                  config().periodRef === undefined
+                    ? { period, periodRef: dashboardMonth() }
+                    : { period },
+                )
+              }
             />
+            <Show when={periodRefApplies(config())}>
+              <SelectField
+                label={
+                  periodUnit() === "year" ? t("chartEdit.periodYear") : t("chartEdit.periodMonth")
+                }
+                value={(config().periodRef ?? dashboardMonth()).slice(
+                  0,
+                  periodUnit() === "year" ? 4 : 7,
+                )}
+                options={choices()}
+                text={(value) =>
+                  value.length === 4 ? value : monthTitle(value, settings().locale)
+                }
+                onChange={setPeriodRef}
+              />
+            </Show>
             <SelectField
               label={t("chartEdit.compare")}
               value={effective().compare}

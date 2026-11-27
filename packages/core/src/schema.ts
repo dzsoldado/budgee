@@ -150,7 +150,9 @@ export const chartConfigSchema = v.strictObject({
   kind: v.picklist(["bar", "line", "doughnut", "table"]),
   metric: v.picklist(["expenses", "income", "difference", "kept_ratio", "count"]),
   groupBy: v.picklist(["day", "month", "year", "weekday", "category", "detail", "tag"]),
-  period: v.picklist(["dashboard", "last_12_months", "this_year", "all_time"]),
+  period: v.picklist(["dashboard", "last_12_months", "this_year", "all_time", "month", "year"]),
+  /** `YYYY-MM`: the month a `month` period shows; a `year` period shows its year. */
+  periodRef: v.optional(v.pipe(v.string(), v.regex(/^\d{4}-(0[1-9]|1[0-2])$/))),
   compare: v.optional(compareSchema, "none"),
   /** Running total within the period. */
   cumulative: v.optional(v.boolean(), false),

@@ -30,6 +30,8 @@ import {
   newDraft,
   optionLabel,
   PERIODS,
+  periodChoices,
+  periodRefApplies,
   sameDraft,
   TEMPLATES,
   templateDescription,
@@ -138,6 +140,38 @@ describe("option compatibility rules", () => {
     expect(effectiveConfig(base({ period: "all_time", compare: "previous_period" })).compare).toBe(
       "none",
     );
+  });
+
+  test("a chosen month or year is kept only while the period is one", () => {
+    const onMonth = base({ period: "month", periodRef: "2025-03" });
+    expect(periodRefApplies(onMonth)).toBe(true);
+    expect(effectiveConfig(onMonth).periodRef).toBe("2025-03");
+    expect(effectiveConfig({ ...onMonth, period: "year" }).periodRef).toBe("2025-03");
+    const following = changeConfig(onMonth, { period: "dashboard" });
+    expect(following.periodRef).toBe("2025-03");
+    expect(effectiveConfig(following).periodRef).toBeUndefined();
+  });
+
+  test("the months and years offered run from the first entry to today, newest first", () => {
+    expect(periodChoices("month", "2025-11-20", "2026-02-10", undefined)).toEqual([
+      "2026-02",
+      "2026-01",
+      "2025-12",
+      "2025-11",
+    ]);
+    expect(periodChoices("year", "2023-05-01", "2026-02-10", "2026-01")).toEqual([
+      "2026",
+      "2025",
+      "2024",
+      "2023",
+    ]);
+    // No entries: just today's; a stored choice outside the range is still offered.
+    expect(periodChoices("month", null, "2026-02-10", undefined)).toEqual(["2026-02"]);
+    expect(periodChoices("year", "2025-01-01", "2026-02-10", "2020-06")).toEqual([
+      "2026",
+      "2025",
+      "2020",
+    ]);
   });
 
   test("every default chart and template is already a valid combination", () => {
