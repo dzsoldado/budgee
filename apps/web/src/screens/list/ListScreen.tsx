@@ -4,6 +4,7 @@
 import { totals } from "@budgee/core";
 import { A, useHref } from "@solidjs/router";
 import { createMemo, createSignal, Match, onCleanup, onMount, Show, Switch } from "solid-js";
+import { MonthPicker } from "../../components/MonthPicker";
 import { useApp } from "../../context";
 import { createLiveQuery } from "../../db/live";
 import { t } from "../../i18n";
@@ -58,7 +59,15 @@ export function ListScreen() {
             >
               <ChevronLeftIcon size={20} />
             </button>
-            <h1 class="month-title">{title()}</h1>
+            <h1 class="month-title">
+              <MonthPicker
+                value={listMonth()}
+                unit="month"
+                locale={settings().locale}
+                sheet={!wide()}
+                onChange={setListMonth}
+              />
+            </h1>
             <button
               type="button"
               class="month-step"

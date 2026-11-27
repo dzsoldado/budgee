@@ -28,6 +28,7 @@ import {
   Show,
 } from "solid-js";
 import { ConfirmDialog } from "../../components/ConfirmDialog";
+import { MonthPicker } from "../../components/MonthPicker";
 import { Segmented } from "../../components/Segmented";
 import { useApp } from "../../context";
 import { byChartOrder, moveAnnouncement, moveChart, removeChart } from "../../dashboard/charts";
@@ -45,6 +46,7 @@ import { dashboardMonth, setDashboardMonth } from "../../dashboard/store";
 import { createLiveQuery } from "../../db/live";
 import { t } from "../../i18n";
 import { todayIso } from "../../lib/date";
+import { createMediaQuery, WIDE_QUERY } from "../../lib/media";
 import {
   ChevronDownIcon,
   ChevronLeftIcon,
@@ -76,6 +78,7 @@ export function DashboardScreen() {
   const addHref = useHref(() => "/add");
   const addChartHref = useHref(() => "/dashboard/add");
   const chartHref = useHref(() => "/dashboard/chart");
+  const wide = createMediaQuery(WIDE_QUERY);
   useDocumentTitle(() => t("dashboard.title"));
 
   // Today moves on when the tab comes back after midnight.
@@ -385,7 +388,18 @@ export function DashboardScreen() {
               >
                 <ChevronLeftIcon size={18} />
               </button>
-              <span class="period-title" aria-live="polite">
+              <span class="period-title">
+                <MonthPicker
+                  value={dashboardMonth()}
+                  unit={period()}
+                  locale={settings().locale}
+                  max={today().slice(0, 7)}
+                  sheet={!wide()}
+                  steady={false}
+                  onChange={setDashboardMonth}
+                />
+              </span>
+              <span class="visually-hidden" aria-live="polite">
                 {title()}
               </span>
               <button

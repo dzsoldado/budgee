@@ -455,3 +455,142 @@
   padding-block: 0 14px;
   padding-inline: 16px;
 }
+
+/* ─── Month picker (components/MonthPicker.tsx) ───────────────────────── */
+
+/* The title that opens it. Every month name of the year sits in the same grid cell, hidden but
+   one, so the button keeps the longest one's width and what sits beside it never moves. */
+.month-pick {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-block-size: 44px;
+  padding-block: 0;
+  padding-inline: 6px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.month-pick:hover {
+  background: var(--surface);
+}
+
+.month-pick > svg {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.month-pick-label {
+  display: grid;
+  justify-items: center;
+}
+
+.month-pick-label > * {
+  grid-area: 1 / 1;
+}
+
+.month-pick-sizer {
+  visibility: hidden;
+}
+
+.month-picker {
+  inline-size: 300px;
+}
+
+.month-picker-head {
+  padding-inline: 6px;
+}
+
+.month-picker-page {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.month-picker-page-label {
+  min-inline-size: 4ch;
+  white-space: nowrap;
+  font:
+    600 17px "Space Grotesk",
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.month-picker-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 40px;
+  block-size: 40px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.month-picker-step::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block: min(0px, calc(50% - 22px));
+}
+
+.month-picker-step:disabled {
+  color: var(--muted);
+}
+
+.month-grid {
+  display: grid;
+  min-inline-size: 0;
+  margin: 0;
+  border: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  padding-block: 6px 14px;
+  padding-inline: 12px;
+}
+
+.month-cell {
+  block-size: 44px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  font:
+    500 14px Inter,
+    sans-serif;
+  cursor: pointer;
+}
+
+.month-cell:hover {
+  background: var(--bg);
+}
+
+.month-cell[aria-disabled="true"] {
+  color: var(--muted);
+  cursor: default;
+}
+
+.month-cell[aria-disabled="true"]:hover {
+  background: transparent;
+}
+
+.month-cell-today {
+  border-color: var(--line);
+}
+
+.month-cell[aria-current="true"] {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 600;
+}

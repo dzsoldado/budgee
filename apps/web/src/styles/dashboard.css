@@ -100,6 +100,30 @@
   white-space: nowrap;
 }
 
+.period-title .month-pick {
+  min-block-size: 40px;
+}
+
+/* Narrow phones: the steps are drawn 32px wide (their 44px targets overlap the title), so the
+   title keeps room for the month and the picker's chevron. */
+@media (max-width: 420px) {
+  .period-step {
+    inline-size: 32px;
+  }
+
+  .period-nav .period-step::after {
+    inset-inline: -6px;
+  }
+}
+
+/* The steps sit at the box's ends, so the title needs no steady width; below 375px it drops the
+   picker's chevron too, so "September 2026" still fits. */
+@media (max-width: 374.98px) {
+  .period-title .month-pick > svg {
+    display: none;
+  }
+}
+
 .compare {
   display: flex;
   flex-direction: column;

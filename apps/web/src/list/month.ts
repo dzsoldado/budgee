@@ -15,6 +15,12 @@ export function shiftMonth(month: string, delta: number): string {
   return `${String(year).padStart(4, "0")}-${String((total % 12) + 1).padStart(2, "0")}`;
 }
 
+/** The twelve months (`YYYY-MM`) of `year`. */
+export function monthsOfYear(year: number): string[] {
+  const y = String(year).padStart(4, "0");
+  return Array.from({ length: 12 }, (_, i) => `${y}-${String(i + 1).padStart(2, "0")}`);
+}
+
 /** First and last day of the month, inclusive. */
 export function monthRange(month: string): { start: string; end: string } {
   const days = daysInMonth(Number(month.slice(0, 4)), Number(month.slice(5, 7)) - 1);
